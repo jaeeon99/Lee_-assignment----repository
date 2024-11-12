@@ -17,7 +17,22 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class SeatPage extends StatelessWidget {
+class SeatPage extends StatefulWidget {
+  @override
+  State<SeatPage> createState() => _SeatPageState();
+}
+
+class _SeatPageState extends State<SeatPage> {
+  int? selectedRow;
+  int? selectedCol;
+
+  void onSelected(int row, int col) {
+    setState(() {
+      selectedRow = row;
+      selectedCol = col;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,8 +42,8 @@ class SeatPage extends StatelessWidget {
       backgroundColor: Colors.grey[200],
       body: Column(
         children: [
-          SeatSelectBox(),
-          SeatBottom(),
+          SeatSelectBox(selectedRow, selectedCol, onSelected),
+          SeatBottom(selectedRow, selectedCol),
         ],
       ),
     );
