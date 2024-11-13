@@ -1,54 +1,85 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bim_app/pages/home/widgets/gender_box.dart';
+import 'package:flutter_bim_app/pages/home/widgets/slider_box.dart';
+import 'package:flutter_bim_app/pages/result/result_page.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  bool isMale = true;
+  void onGenderChanged(bool male) {
+    setState(() {
+      isMale = male;
+    });
+  }
+
+  double height = 170;
+  void onHightChanged(double newhight) {
+    setState(() {
+      height = newhight;
+    });
+  }
+
+  double weight = 70;
+
+  void OnWeightChanged(double newWeight) {
+    setState(() {
+      weight = newWeight;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('BMI CALCULATOR'),
       ),
-      body: Column(
-        children: [
-          Container(
-            width: 100,
-            height: 100,
-            decoration: BoxDecoration(
-                border: Border.all(
-              color: Theme.of(context).dividerColor,
-            )),
-          ),
-          Icon(Icons.male),
-          Text('Male'),
-          Slider(
-            value: 50,
-            onChanged: (v) {},
-            min: 10,
-            max: 100,
-          ),
-          SizedBox(
-            width: 200,
-            height: 56,
-            child: ElevatedButton(onPressed: () {}, child: Text('CALCULATE')),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          SizedBox(
-            width: 200,
-            height: 56,
-            child: OutlinedButton(
-              onPressed: () {},
-              child: Text('RECLCULATE'),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 50),
+        child: Column(
+          children: [
+            GenderBox(isMale, onGenderChanged),
+            Spacer(),
+            SliderBox(
+              label: 'HIGHT',
+              value: height,
+              unit: 'cm',
+              onChanged: onHightChanged,
             ),
-          ),
-          Text(
-            'Test',
-            style: TextStyle(
-              fontSize: 16,
-              color: Theme.of(context).highlightColor,
+            Spacer(),
+            SliderBox(
+              label: 'WEIGHT',
+              value: weight,
+              unit: 'kg',
+              onChanged: OnWeightChanged,
             ),
-          ),
-        ],
+            Spacer(),
+            SizedBox(
+              width: double.infinity,
+              height: 56,
+              child: ElevatedButton(
+                  onPressed: () {
+                    final meterHight = height / 100;
+                    final bmi = weight / (meterHight * meterHight);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return ResultPage(bmi);
+                        },
+                      ),
+                    );
+                  },
+                  child: Text('CALCULATE')),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+          ],
+        ),
       ),
     );
   }
