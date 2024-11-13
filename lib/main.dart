@@ -8,12 +8,19 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      themeMode: ThemeMode.light, // 개발이 완료되면 지움, 휴대폰의 테마에 맞춰 사용자가 변경 가능하도록
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+            seedColor: Colors.pinkAccent, brightness: Brightness.light),
+      ),
+      darkTheme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+            seedColor: Colors.pinkAccent, brightness: Brightness.dark),
+      ),
       home: HomePage(),
     );
   }
 }
-
